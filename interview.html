@@ -125,11 +125,104 @@
             line-height: 1.6;
         }
 
+        /* Plans Section Styles */
+        .plans-section {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .plans-scroll-container {
+            width: 100%;
+        }
+
         .plans-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Mobile Horizontal Scroll Styles */
+        @media (max-width: 768px) {
+            .plans-scroll-container {
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0 1rem;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                scroll-snap-type: x mandatory;
+            }
+            
+            .plans-scroll-container::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .plans-grid {
+                display: flex;
+                gap: 1rem;
+                padding: 0;
+                margin: 0;
+                flex-wrap: nowrap;
+                padding-left: calc(50vw - 150px);
+                padding-right: calc(50vw - 150px);
+            }
+            
+            .plan-card {
+                flex-shrink: 0;
+                width: 300px;
+                max-width: none;
+                scroll-snap-align: center;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .plans-grid {
+                padding-left: calc(50vw - 140px);
+                padding-right: calc(50vw - 140px);
+            }
+            
+            .plan-card {
+                width: 280px;
+            }
+        }
+
+        /* Scroll Indicators */
+        .scroll-indicators {
+            display: none;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #4F46E5;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-only {
+                display: flex;
+            }
+            
+            .scroll-indicators {
+                display: flex;
+            }
         }
 
         .plan-card {
@@ -322,7 +415,17 @@
                     <div class="explanation-text" id="explanationText"></div>
                 </div>
 
-                <div class="plans-grid" id="plansGrid"></div>
+                <div class="plans-section">
+                    <div class="plans-scroll-container">
+                        <div class="plans-grid" id="plansGrid"></div>
+                    </div>
+                </div>
+
+                <div class="scroll-indicators">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
 
                 <button class="start-over-btn" onclick="startOver()">Start Over</button>
             </div>
@@ -359,5 +462,24 @@
     <script src="js/main.js"></script>
     <script src="js/mobile-plans.js"></script>
     <script src="js/interview.js"></script>
+    <script>
+        // Auto-center the "Best" plan on mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth <= 768) {
+                const bestPlan = document.querySelector('.plan-card:has(.rank-best)');
+                if (bestPlan) {
+                    bestPlan.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest', 
+                        inline: 'center' 
+                    });
+                }
+            }
+        });
+
+        function getRecommendations() {
+            // ... existing code ...
+        }
+    </script>
 </body>
 </html> 
