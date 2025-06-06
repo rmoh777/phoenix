@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/interview.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
         .mobile-plan-finder {
             max-width: 1200px;
@@ -249,17 +251,52 @@
             background: #4B5563;
         }
 
+        /* Mobile Swipe Styles */
+        .mobile-only {
+            display: none;
+        }
+
+        .desktop-only {
+            display: grid;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .swiper-slide {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--color-primary);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--color-primary);
+        }
+
         @media (max-width: 768px) {
+            .mobile-only {
+                display: block;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
             .mobile-plan-finder {
                 padding: 1rem;
             }
 
             .finder-title {
                 font-size: 2rem;
-            }
-
-            .plans-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -322,7 +359,20 @@
                     <div class="explanation-text" id="explanationText"></div>
                 </div>
 
-                <div class="plans-grid" id="plansGrid"></div>
+                <!-- Swiper container for mobile -->
+                <div class="swiper-container mobile-only">
+                    <div class="swiper-wrapper" id="swiperWrapper">
+                        <!-- Plan slides will be inserted here -->
+                    </div>
+                    <!-- Add pagination -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Add navigation buttons -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+                <!-- Desktop grid view -->
+                <div class="plans-grid desktop-only" id="plansGrid"></div>
 
                 <button class="start-over-btn" onclick="startOver()">Start Over</button>
             </div>
@@ -359,5 +409,68 @@
     <script src="js/main.js"></script>
     <script src="js/mobile-plans.js"></script>
     <script src="js/interview.js"></script>
+    <script>
+        let swiper = null;
+
+        function initializeSwiper() {
+            if (window.innerWidth <= 768) {
+                if (!swiper) {
+                    swiper = new Swiper('.swiper-container', {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                        loop: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    });
+                }
+            }
+        }
+
+        // Initialize Swiper on page load
+        document.addEventListener('DOMContentLoaded', initializeSwiper);
+
+        // Reinitialize Swiper on window resize
+        window.addEventListener('resize', initializeSwiper);
+
+        function getRecommendations() {
+            const userInput = document.getElementById('userInput').value;
+            if (!userInput.trim()) {
+                alert('Please describe what you are looking for in a mobile plan.');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            // Simulate API call (replace with actual API call)
+            setTimeout(() => {
+                // Hide loading state
+                document.getElementById('loading').style.display = 'none';
+                
+                // Show results
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                // Initialize Swiper for mobile view
+                initializeSwiper();
+                
+                // Your existing results display logic here
+            }, 2000);
+        }
+
+        function startOver() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('questionSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+        }
+    </script>
 </body>
 </html> 
