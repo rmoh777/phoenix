@@ -128,25 +128,40 @@ function displayResults(plans, explanations) {
             'Good': 'rank-good'
         }[plan.rank] || 'rank-good';
 
+        // Create features list
+        const featuresList = plan.features.map(feature => `<li>${feature}</li>`).join('');
+        
+        // Add additional features if it's a lifeline plan
+        const additionalFeaturesList = plan.isLifeline && plan.additionalFeatures.length > 0 
+            ? `<div class="lifeline-features">
+                <h4>Additional Benefits:</h4>
+                <ul>${plan.additionalFeatures.map(feature => `<li>${feature}</li>`).join('')}</ul>
+               </div>`
+            : '';
+
+        // Add coverage area if it's a lifeline plan
+        const coverageArea = plan.isLifeline 
+            ? `<div class="coverage-area">
+                <h4>Coverage Area:</h4>
+                <p>${plan.coverageArea}</p>
+               </div>`
+            : '';
+
         card.innerHTML = `
             <div class="plan-rank ${rankClass}">${plan.rank}</div>
             <div class="plan-carrier">${plan.carrier}</div>
             <div class="plan-name">${plan.name}</div>
             <div class="plan-price">$${plan.price}<span style="font-size: 0.875rem; font-weight: 400;">/mo</span></div>
             <ul class="plan-features">
-                <li>Unlimited Data</li>
-                <li>5G</li>
-                <li>Premium streaming</li>
-                <li>${plan.hotspot !== 'No' ? plan.hotspot + ' hotspot' : 'No hotspot'}</li>
-                ${plan.features.includes('Netflix included') ? '<li>Netflix included</li>' : ''}
-                ${plan.features.includes('HBO Max included') ? '<li>HBO Max included</li>' : ''}
-                ${plan.features.includes('4K video') ? '<li>4K video</li>' : ''}
-                ${plan.features.includes('International calling') ? '<li>International calling</li>' : ''}
+                ${featuresList}
+                ${plan.hotspot !== 'No' && plan.hotspot !== 'Not specified' && plan.hotspot !== 'Not available' ? `<li>${plan.hotspot} hotspot</li>` : ''}
             </ul>
+            ${additionalFeaturesList}
+            ${coverageArea}
             <div class="plan-explanation">
                 ${explanations[plan.id] || 'This plan offers great value for your needs.'}
             </div>
-            <a href="https://www.carrierURL.com" target="_blank" class="plan-details-btn">Full Plan Details</a>
+            <a href="${plan.signupUrl}" target="_blank" class="plan-details-btn">Full Plan Details</a>
         `;
 
         plansGrid.appendChild(card);

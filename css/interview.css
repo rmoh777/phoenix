@@ -228,6 +228,63 @@
     background: #4B5563;
 }
 
+.lifeline-features {
+    background: #F0F9FF;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid #BAE6FD;
+}
+
+.lifeline-features h4 {
+    color: #0369A1;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.lifeline-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lifeline-features li {
+    color: #0C4A6E;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.lifeline-features li:before {
+    content: "✓";
+    color: #0284C7;
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.coverage-area {
+    background: #F0FDF4;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid #86EFAC;
+}
+
+.coverage-area h4 {
+    color: #166534;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.coverage-area p {
+    color: #14532D;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
 @media (max-width: 768px) {
     .mobile-plan-finder {
         padding: 1rem;
